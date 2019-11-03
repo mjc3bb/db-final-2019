@@ -2,10 +2,9 @@ drop database if exists dbfinal;
 create database dbfinal;
 use dbfinal;
 CREATE TABLE orders (
-  orderID int PRIMARY KEY,
+  orderID int PRIMARY KEY auto_increment,
   userID int,
-  orderAddress varchar(255),
-  orderTotal decimal(10,2)
+  orderAddress varchar(255)
 );
 
 CREATE TABLE orderLineItems (

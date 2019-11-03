@@ -80,6 +80,7 @@ const service = (parent, {serviceID}) => {
 };
 
 const getAddress = (parent, args) => {
+  return {formatted: "Whitestone Rd"};
   const {lat, lon} = args;
   return new Promise((resolve) => {
     axios.get(`http://open.mapquestapi.com/geocoding/v1/reverse?key=ZQBdqhTJniHjNBViA4Yj1JZAEwEAAtjj&location=${lat},${lon}&includeRoadMetadata=true&includeNearestIntersection=true`)
