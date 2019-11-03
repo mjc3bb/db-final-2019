@@ -1,4 +1,5 @@
 const {sequelize} = require('../db');
+const axios = require('axios');
 let _ = require('underscore');
 
 
@@ -83,6 +84,22 @@ const queryResolver = {
         } else {
           resolve(null)
         }
+      });
+    });
+  },
+  getAddress: (parent, args) =>{
+    // return {formatted:"Whitestone Road"};
+    console.log(args);
+    const {lat,lon} = args;
+    return new Promise((resolve)=>{
+      axios.get(`http://open.mapquestapi.com/geocoding/v1/reverse?key=ZQBdqhTJniHjNBViA4Yj1JZAEwEAAtjj&location=${lat},${lon}&includeRoadMetadata=true&includeNearestIntersection=true`).then((result)=>{
+        // if (!result.data || !result.data.results || !result.data.results[0].locations[0] || !result.data.results[0].locations[0].street){
+        //   resolve({formatted:"123 Eagle Drive"})
+        // }
+        const response = {
+          formatted: result.data.results[0].locations[0].street
+        };
+        resolve(response);
       });
     });
   },

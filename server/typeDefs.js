@@ -77,6 +77,7 @@ const typeDefs = gql`
         services: [Service]
         homepage: Homepage
         service(serviceID:ID): Service
+        getAddress(lat:String,lon:String): Address
     }
 
     type Mutation {

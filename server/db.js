@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
 const mysql = require('mysql');
-let sequelize = new Sequelize('mysql://root:password@localhost:3306/ood', {logging: true});
+let sequelize = new Sequelize('mysql://root:password@localhost:3306/dbfinal', {logging: false});
 
 module.exports = {sequelize};
