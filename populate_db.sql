@@ -1,4 +1,4 @@
-insert into users values (
+insert ignore into users  values (
 	1, 'user', 'password', 122.22
 );
 
@@ -319,3 +319,28 @@ insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
 select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
 from (select serviceID from services) as s,
 (select "Item 3" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
+
+insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
+select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
+from (select serviceID from services) as s,
+(select "Item 4" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
+
+insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
+select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
+from (select serviceID from services) as s,
+(select "Item 5" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
+
+insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
+select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
+from (select serviceID from services) as s,
+(select "Item 6" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
+
+insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
+select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
+from (select serviceID from services) as s,
+(select "Item 7" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
+
+insert ignore into serviceItems(serviceID, itemName, itemDescription, itemPrice)
+select s.serviceID, i.itemName, i.itemDescription, i.itemPrice
+from (select serviceID from services) as s,
+(select "Item 8" as itemName, "description" as itemDescription, 8.99 as itemPrice) as i;
