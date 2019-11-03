@@ -6,98 +6,89 @@ let sequelize = new Sequelize('mysql://root:password@localhost:3306/ood', {loggi
 let _ = require('underscore');
 
 const typeDefs = gql`
-#  type Data {
-#    restaurant_phone: String
-#    restaurant_name: String
-#    address: Address
-#    cuisines: [String]
-#  }
-  
-  type Address {
-    city: String
-    formatted: String
-    street: String
-    state: String
-    postal_code: String
-  }
+    type Address {
+        city: String
+        formatted: String
+        street: String
+        state: String
+        postal_code: String
+    }
 
-  type Tag {
-    tagID: Int
-    serviceID: Int
-    tagName: String
-    services: [Service]
-  }
+    type Tag {
+        tagID: Int
+        serviceID: Int
+        tagName: String
+        services: [Service]
+    }
 
-  type FeatureList {
-    services: [Service]
-    featureName: String
-  }
-  
-  type Homepage {
-    features: [FeatureList]
-  }
+    type FeatureList {
+        services: [Service]
+        featureName: String
+    }
 
-  type Service{
-    serviceID: ID
-    serviceName: String
-    serviceAddress: String
-    imageURI: String
-    items: [Item]
-    tags(count:Int): [Tag]
-  }
+    type Homepage {
+        features: [FeatureList]
+    }
 
-  type Item {
-    serviceID: Int
-    itemID: Int
-    itemName: String
-    itemDescription: String
-    itemPrice: Float
-  }
-  
-  type User {
-    userID: ID
-    username: String
-    accountBalance: Float
-    orders: [Order]
-  }
+    type Service{
+        serviceID: ID
+        serviceName: String
+        serviceAddress: String
+        imageURI: String
+        items: [Item]
+        tags(count:Int): [Tag]
+    }
 
-  type LineItem {
-    orderID: ID
-    order: Order
-    lineID: Int
-    itemID: Int
-    item: Item
-    serviceID: Int
-    # service: Service
-    quantity: Int
-  }
+    type Item {
+        serviceID: Int
+        itemID: Int
+        itemName: String
+        itemDescription: String
+        itemPrice: Float
+    }
 
-  type Order {
-    orderID: ID!
-    userID: Int!
-    user: User!
-    orderAddress: String!
-    orderTotal: Float
-    lineItems: [LineItem]!
-  }
+    type User {
+        userID: ID
+        username: String
+        accountBalance: Float
+        orders: [Order]
+    }
 
-  type Query {
-    users: [User]
-    user(userID:Int): User
-    orders: [Order]
-    order(orderID:ID): Order
-    services: [Service]
-    homepage: Homepage
-    service(serviceID:ID): Service
-#    data: [Data]
-#    cuisines: [Tag]
-  }
-  
-  type Mutation {
-    createService(serviceName: String, serviceAddress:String, imageURI:String):Service
-    addServiceItem(serviceID: Int, itemName:String, itemDescription:String, itemPrice: Float):Item
-    createOrder(userID:ID,orderAddress:String): Order
-  }
+    type LineItem {
+        orderID: ID
+        order: Order
+        lineID: Int
+        itemID: Int
+        item: Item
+        serviceID: Int
+        # service: Service
+        quantity: Int
+    }
+
+    type Order {
+        orderID: ID!
+        userID: Int!
+        user: User!
+        orderAddress: String!
+        orderTotal: Float
+        lineItems: [LineItem]!
+    }
+
+    type Query {
+        users: [User]
+        user(userID:Int): User
+        orders: [Order]
+        order(orderID:ID): Order
+        services: [Service]
+        homepage: Homepage
+        service(serviceID:ID): Service
+    }
+
+    type Mutation {
+        createService(serviceName: String, serviceAddress:String, imageURI:String):Service
+        addServiceItem(serviceID: Int, itemName:String, itemDescription:String, itemPrice: Float):Item
+        createOrder(userID:ID,orderAddress:String): Order
+    }
 `;
 
 
@@ -116,7 +107,7 @@ const resolvers = {
     },
     tags: ({serviceID}, {count}) => {
       return new Promise((resolve) => {
-          if (!count) count=20;
+          if (!count) count = 20;
           sequelize.query(`select s.* from serviceTags st, tags s where serviceID=${serviceID} and st.tagID=s.tagID limit 0,${count}`).then((results) => {
             resolve(results[0]);
           })
