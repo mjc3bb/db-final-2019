@@ -1,6 +1,18 @@
 const {gql} = require('apollo-server');
 
 const typeDefs = gql`
+    input _ItemPayload {
+        itemID: Int
+        serviceID: Int
+        quantity: Int
+    }
+    
+    input _OrderPayload {
+        userID: Int
+        orderAddress: String
+        items: [_ItemPayload]
+    }
+    
     type Address {
         city: String
         formatted: String
@@ -83,7 +95,7 @@ const typeDefs = gql`
     type Mutation {
         createService(serviceName: String, serviceAddress:String, imageURI:String):Service
         addServiceItem(serviceID: Int, itemName:String, itemDescription:String, itemPrice: Float):Item
-        createOrder(userID:ID,orderAddress:String): Order
+        createOrder(order:_OrderPayload): Order
     }
 `;
 

@@ -4,6 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MenuScreen from '../screens/MenuScreen';
 import LocationETA from '../components/LocationETA';
 import HeaderAvatar from '../components/HeaderAvatar';
+import OrderScreen from "../screens/OrderScreen";
 
 
 export default createStackNavigator(
@@ -15,6 +16,13 @@ export default createStackNavigator(
         headerLeft: undefined,
       },
     },
+    Order:{
+      screen: OrderScreen,
+      navigationOptions: {
+        headerLeft: undefined,
+        headerTitle: "Your Order"
+      }
+    }
   }, {
     defaultNavigationOptions: {
       headerLeft: LocationETA,

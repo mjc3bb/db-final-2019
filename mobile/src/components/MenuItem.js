@@ -1,13 +1,14 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useRef} from 'react';
 import {TouchableOpacity, View} from 'react-native';
-import {Button, Card, Divider, Text} from 'react-native-elements';
+import {Button, Card, Divider, Text, Input} from 'react-native-elements';
 import Collapsible from 'react-native-collapsible';
 import {cartContext} from '../state/Cart';
 
 
-export default ({item}) =>{
+export default ({item, serviceID}) =>{
   const [collapsed, setCollapsed] = useState(true);
   const cartStore = useContext(cartContext);
+  const [textState, setTextState] = useState('');
   return (
     <>
       <TouchableOpacity
@@ -28,7 +29,20 @@ export default ({item}) =>{
             <Collapsible collapsed={collapsed}>
               <Divider/>
               <Text>{item.itemDescription}</Text>
-              <Button title='Add to Order' containerStyle={{alignSelf:'flex-end'}} titleStyle={{fontSize:12}} onPress={()=>cartStore.addItem()}/>
+              <View style={{flexDirection:"row"}}>
+                <Input
+                  onChangeText={text=>setTextState(text)}
+                  placeholder="Quantity"
+                  containerStyle={{flex:4,alignSelf:'flex-start'}}
+                  style={{flex:1}}
+                />
+                <Button
+                  title='Add to Order'
+                  containerStyle={{alignSelf:'flex-end'}}
+                  titleStyle={{fontSize:12}}
+                  onPress={()=>cartStore.addItem(item.itemID, serviceID,textState!=='' ? textState: 1)}
+                />
+              </View>
             </Collapsible>
           </View>
         </Card>

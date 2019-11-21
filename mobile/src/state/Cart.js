@@ -1,12 +1,12 @@
 import React, {createContext} from 'react';
 
 
-
 class Cart{
-  items = new Map();
+  items = [];
 
-  addItem(){
-    alert("Item added");
+  addItem(itemID, serviceID, quantity){
+    this.items.push({itemID, serviceID, quantity});
+    alert(quantity);
   }
 }
 

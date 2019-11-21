@@ -21,9 +21,9 @@ query serviceInfo($serviceID:ID){
 }
 `;
 
-const MenuList = ({itemList}) => {
+const MenuList = ({itemList, serviceID}) => {
   return (
-    <FlatList data={itemList} renderItem={({item}) => <MenuItem item={item}/>}/>
+    <FlatList data={itemList} renderItem={({item}) => <MenuItem item={item} serviceID={serviceID}/>}/>
   );
 };
 
@@ -43,7 +43,7 @@ export default () => {
 
   return (
     <>
-      <MenuList itemList={itemList}/>
+      <MenuList itemList={itemList} serviceID={serviceID}/>
     </>
   );
 };
