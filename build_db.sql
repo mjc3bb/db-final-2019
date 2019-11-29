@@ -20,7 +20,8 @@ CREATE TABLE users (
   userID int PRIMARY KEY,
   username varchar(255),
   passHash varchar(255),
-  accountBalance decimal(10,2)
+  accountBalance decimal(10,2),
+  currentOrderID int
 );
 
 CREATE TABLE services (
@@ -56,3 +57,4 @@ ALTER TABLE serviceItems ADD FOREIGN KEY (serviceID) REFERENCES services(service
 ALTER TABLE orderLineItems ADD FOREIGN KEY (orderID) REFERENCES orders(orderID);
 ALTER TABLE orderLineItems ADD FOREIGN KEY (serviceID) REFERENCES services(serviceID);
 ALTER TABLE orderLineItems ADD FOREIGN KEY (itemID) REFERENCES serviceItems(serviceID);
+ALTER TABLE users ADD FOREIGN KEY (currentOrderID) REFERENCES orders(orderID);

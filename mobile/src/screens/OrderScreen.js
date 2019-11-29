@@ -7,45 +7,57 @@ import ServiceList from "../components/ServiceList";
 
 
 const homepageQuery = gql`
- {
-  homepage{
-    features{
-      services{
-        serviceID
-        serviceName
-        serviceAddress
-        imageURI
-        tags(count:2){
-          tagName
+    query u($userID:Int) {
+        user(userID:$userID){
+            currentOrder{
+                orderID
+                orderAddress
+                orderTotal
+                lineItems{
+                    quantity
+                    item{
+                        serviceID
+                        itemID
+                        itemName
+                        itemDescription
+                        itemPrice
+                    }
+
+                }
+            }
         }
-      }
-      featureName
     }
-  }
- }
 `;
 
-export default  () => {
-  let serviceID = 1;
-  // const {loading, error, data, refetch} = useQuery(homepageQuery,{variables:{serviceID:serviceID}});
+export default () => {
+  let userID = 1;
+  const {loading, error, data, refetch} = useQuery(homepageQuery, {variables: {userID: userID}});
 
-  // if (loading) {
-  //   return null;
-  // }
+  if (loading) {
+    return null;
+  }
 
 
-  const orderItems = [];
 
-  const OrderItem = () =>(
-    <Text>Item</Text>
-  );
+  const OrderItem = ({lineItem}) => {
+    const {item, quantity} = lineItem;
+
+    return (
+      <>
+        <Text>{item.itemName}</Text>
+        <Text>{item.itemDescription}</Text>
+        <Text>${item.itemPrice}</Text>
+        <Text>{quantity}</Text>
+      </>
+    )
+  };
 
   return (
     <FlatList
       // refreshing={loading}
       // onRefresh={()=>refetch()}
-      data={orderItems}
-      renderItem={({item}) => <OrderItem/>}
+      data={data.user.currentOrder ? data.user.currentOrder.lineItems : []}
+      renderItem={({item}) => <OrderItem lineItem={item}/>}
       keyExtractor={(item, index) => index.toString()}
     />
   );

@@ -39,11 +39,18 @@ const createOrder = (parent, {order}) => {
         }));
       })
       .then(()=>{
+        return sequelize.query(`update users set currentOrderID = ${maxID} where userID=${userID}`)
+      })
+      .then(()=>{
         resolve({orderID:maxID, userID, orderAddress})
       })
-
-
   });
 };
 
-module.exports = {createService, addServiceItem, createOrder};
+const cancelUserOrder = (parent, {userID}) =>{
+  return new Promise((resolve)=>{
+    sequelize.query(`update users set currentOrderID=NULL where userID=${userID}`).then(()=>resolve(true));
+  })
+};
+
+module.exports = {createService, addServiceItem, createOrder, cancelUserOrder};

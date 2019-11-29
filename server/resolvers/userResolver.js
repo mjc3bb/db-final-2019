@@ -14,4 +14,18 @@ const orders = ({userID}, args) => {
   });
 };
 
-module.exports = {orders};
+const currentOrder = ({currentOrderID}) =>{
+  return new Promise(resolve => {
+
+    if (currentOrderID == null) resolve(null);
+
+    sequelize.query(`select * from orders where orderID=${currentOrderID}`)
+      .then((results)=>{
+
+        if (results[0].length > 0) resolve(results[0][0]);
+        else resolve(null);
+      })
+  })
+}
+
+module.exports = {orders, currentOrder};

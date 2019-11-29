@@ -1,5 +1,5 @@
 insert ignore into users  values (
-	1, 'user', 'password', 122.22
+	1, 'user', 'password', 122.22, Null
 );
 
 insert ignore into tags(tagName) values
