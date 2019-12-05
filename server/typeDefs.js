@@ -6,13 +6,13 @@ const typeDefs = gql`
         serviceID: Int
         quantity: Int
     }
-    
+
     input _OrderInput {
         userID: Int
         orderAddress: String
         items: [_ItemInput]
     }
-    
+
     type Address {
         city: String
         formatted: String
@@ -95,10 +95,15 @@ const typeDefs = gql`
     }
 
     type Mutation {
+        createUserLogin(username:String, password:String):User
+        attemptUserLogin(username:String, password:String):User
         createService(serviceName: String, serviceAddress:String, imageURI:String):Service
         addServiceItem(serviceID: Int, itemName:String, itemDescription:String, itemPrice: Float):Item
+        removeServiceItem(serviceID: Int, itemID:Int):Boolean
         createOrder(order:_OrderInput): Order
         cancelUserOrder(userID:Int): Boolean
+        addOrderLineItem(orderID:Int, item:_ItemInput): Boolean
+        removeOrderLineItem(orderID: Int, lineID: Int): Boolean
     }
 `;
 

@@ -1,5 +1,45 @@
 const {sequelize} = require('../db');
 
+const attemptUserLogin = (parent, {username, password}) => {
+  return new Promise((resolve, reject) => {
+    sequelize.query(`select * from users where username='${username}' and passHash='${password}'`)
+      .then((results)=>{
+        console.log(results[0]);
+        if (results[0].length>0){
+          resolve(results[0][0])
+        }else{
+          reject('Username or password incorrect')
+        }
+      })
+  });
+};
+
+const createUserLogin = (parent, {username, password}) => {
+  return new Promise((resolve, reject)=>{
+    let startingBalance = 5.0;
+    let maxID = null;
+    sequelize.query(`select * from users where username='${username}'`)
+      .then((results)=>{
+        if (results[0].length>0){
+          reject('User already exists')
+        }else{
+          return sequelize.query(`select max(userID)+1 as maxID from users`)
+        }
+      })
+      .then((results)=>{
+        const {maxID: newMaxID} = results[0][0];
+        maxID = newMaxID ? newMaxID : 1;
+        return sequelize.query(`insert into users(userid, username, passhash, accountbalance) value (${maxID}, '${username}', '${password}', ${startingBalance})`)
+      })
+      .then(()=>{
+        return sequelize.query(`select * from users where userID=${maxID}`)
+      })
+      .then((results)=>{
+        resolve(results[0][0])
+      })
+  });
+};
+
 const createService = (parent, {serviceName = "", serviceAddress = "", imageURI = ""}) => {
   return new Promise((resolve) => {
     sequelize.query(`insert into services(serviceName, serviceAddress, imageURI) values ("${serviceName}", "${serviceAddress}", "${imageURI}")`).then(() => {
@@ -18,6 +58,13 @@ const addServiceItem = (parent, {serviceID, itemName, itemDescription, itemPrice
         resolve(results[0][0])
       })
     });
+  });
+};
+
+const removeServiceItem = (parent, {serviceID, itemID}) => {
+  return new Promise((resolve)=>{
+    sequelize.query(`delete from serviceItems where serviceID=${serviceID} and itemID=${itemID}`)
+      .then(()=>{resolve(true)});
   });
 };
 
@@ -53,4 +100,25 @@ const cancelUserOrder = (parent, {userID}) =>{
   })
 };
 
-module.exports = {createService, addServiceItem, createOrder, cancelUserOrder};
+const addOrderLineItem = (parent, {orderID, item}) => {
+  return new Promise((resolve, reject) => {
+    let maxID = null;
+    sequelize.query(`select max(lineID) + 1 as maxID from orderLineItems where orderID=${orderID}`)
+      .then((result) => {
+        const {maxID: newMaxID} = result[0][0];
+        maxID = newMaxID ? newMaxID : 1;
+        return sequelize.query(`insert into orderLineItems value (${orderID}, ${maxID}, ${item.itemID}, ${item.serviceID}, ${item.quantity})`)
+      })
+      .then(() => {
+        resolve(true)
+      })
+  });
+};
+
+const removeOrderLineItem = (parent, {orderID, lineID}) =>{
+  return new Promise(resolve => {
+    sequelize.query(`delete from orderLineItems where orderID=${orderID} and lineID=${lineID}`).then(()=>resolve(true));
+  })
+};
+
+module.exports = {attemptUserLogin, removeServiceItem, createUserLogin, createService, addServiceItem, createOrder, cancelUserOrder, addOrderLineItem, removeOrderLineItem};

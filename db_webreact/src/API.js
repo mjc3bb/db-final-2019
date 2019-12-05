@@ -7,5 +7,4 @@ const cache = new InMemoryCache();
 const link = new HttpLink({
   uri: 'http://localhost:4000/',
 });
-const shouldBatch = false;
-export const client = new ApolloClient({cache, link, shouldBatch});
+export const client = new ApolloClient({cache, link});

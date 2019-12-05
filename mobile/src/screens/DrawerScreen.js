@@ -1,13 +1,17 @@
 import React from 'react';
 import {useQuery} from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import {useContext} from 'react';
 import {SafeAreaView, Button} from 'react-native';
 import {Text} from 'react-native-elements';
 import {useNavigation} from 'react-navigation-hooks';
+import {userStoreContext} from "../state/User";
 
 
 export default ()=>{
       const {navigate} = useNavigation();
+      const {userStore} = useContext(userStoreContext);
+
       const {loading, data, error} = useQuery(gql`
        query($userID:Int){
         user(userID:$userID){

@@ -56,5 +56,5 @@ ALTER TABLE orders ADD FOREIGN KEY (userID) REFERENCES users(userID);
 ALTER TABLE serviceItems ADD FOREIGN KEY (serviceID) REFERENCES services(serviceID);
 ALTER TABLE orderLineItems ADD FOREIGN KEY (orderID) REFERENCES orders(orderID);
 ALTER TABLE orderLineItems ADD FOREIGN KEY (serviceID) REFERENCES services(serviceID);
-ALTER TABLE orderLineItems ADD FOREIGN KEY (itemID) REFERENCES serviceItems(serviceID);
+ALTER TABLE orderLineItems ADD FOREIGN KEY (itemID) REFERENCES serviceItems(itemID);
 ALTER TABLE users ADD FOREIGN KEY (currentOrderID) REFERENCES orders(orderID);
