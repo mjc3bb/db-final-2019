@@ -15,7 +15,7 @@ export default ()=>{
         navigate('LogIn')
       }
 
-      const {loading, data} = useQuery(gql`
+      const {loading, data, refetch} = useQuery(gql`
        query($userID:Int){
         user(userID:$userID){
           username
@@ -23,6 +23,10 @@ export default ()=>{
         }
        }
       `,{variables:{userID:parseInt(userStore.currentUserID)}});
+
+      useEffect(()=>{
+        refetch({variables:{userID:parseInt(userStore.currentUserID)}});
+      }, [userStore.currentOrderID, userStore.currentUserID]);
 
       if (loading) return <SafeAreaView><Text>Loading...</Text></SafeAreaView>;
       return (

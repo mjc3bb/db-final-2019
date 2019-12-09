@@ -104,7 +104,7 @@ const typeDefs = gql`
         cancelUserOrder(userID:Int): Boolean
         addOrderLineItem(orderID:Int, item:_ItemInput): Boolean
         removeOrderLineItem(orderID: Int, lineID: Int): Boolean
-        checkout(orderID:Int, userID: Int):Float
+        checkout(orderID:Int, userID: Int):Int
     }
 `;
 

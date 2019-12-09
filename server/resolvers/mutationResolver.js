@@ -74,7 +74,7 @@ const createOrder = (parent, {order}) => {
 
 const createUserLogin = (parent, {username, password}) => {
   return new Promise((resolve, reject)=>{
-    let startingBalance = 5.0;
+    let startingBalance = 500.0;
     let maxID = null;
     let newUserID = null;
     let newUser = null;
@@ -152,6 +152,7 @@ const checkout = (parent, {orderID, userID}) =>{
   let newOrder = null;
   let newUser = null;
   let newBalance = 0;
+  let newOrderID = 0;
   return new Promise((resolve, reject)=>{
     orderTotal({orderID})
       .then((total)=>{
@@ -170,14 +171,33 @@ const checkout = (parent, {orderID, userID}) =>{
         newUser = user;
       })
       .then(()=>{
-        if (newTotal>newUser.accountBalance) reject('not enough money');
+        if (newTotal>newUser.accountBalance){
+          throw new Error("Not enough money");
+          reject('not enough money');
+        }
         else{
           newBalance = newUser.accountBalance - newTotal;
         }
       })
       .then(()=>{
-        sequelize.query(`update users set accountBalance=${newBalance}, currentOrderID=null`).then(()=>resolve(newBalance))
+        const order = {
+          userID:userID,
+          orderAddress:"",
+          items:[]
+        };
+        return createOrder(null, {order})
       })
+      .then((result)=>{
+        // result.orderID
+        newOrderID = result.orderID;
+        return sequelize.query(`update users set currentOrderID=${result.orderID} where userID=${userID}`);
+      })
+      .then(()=>{
+        sequelize.query(`update users set accountBalance=${newBalance} where userID=${userID}`).then(()=>resolve(newOrderID))
+      })
+      .catch(()=>{
+        reject('Not enough money');
+      });
   });
 };
 

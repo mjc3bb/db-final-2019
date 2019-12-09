@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import {useQuery, useMutation} from '@apollo/react-hooks';
-import {FlatList, View, TouchableOpacity, Button, SafeAreaView} from 'react-native';
+import {FlatList, View, TouchableOpacity, Button, SafeAreaView, Alert} from 'react-native';
 import {Card, Divider, Input, Text} from 'react-native-elements';
 import gql from 'graphql-tag';
 import {cartStore} from "../state/Cart";
@@ -94,7 +94,7 @@ export default () => {
   const {loading, error, data, refetch} = useQuery(homepageQuery, {variables: {userID: parseInt(userStore.currentUserID)}});
   const [isLoading, setIsLoading] = useState(loading);
 
-  const [checkout, {}] = useMutation(checkoutQuery);
+  const [checkout, {data:checkoutData, error:checkoutError}] = useMutation(checkoutQuery);
 
   function re(){
     setIsLoading(true);
@@ -102,8 +102,19 @@ export default () => {
   }
 
   useEffect(()=>{
+    if (checkoutData){
+      userStore.currentOrderID = checkoutData.checkout;
+      re();
+    }
+  },checkoutData);
+
+  useEffect(()=>{
     re();
   },[cartStore.items]);
+
+  useEffect(()=>{
+    if (checkoutError) Alert.alert("Not enough funds");
+  }, checkoutError);
 
   if (loading || isLoading) {
     return null;
@@ -111,7 +122,8 @@ export default () => {
 
   // alert(data.user.currentOrder.lineItems.length);
 
-  if (error) alert(JSON.stringify(error));
+  if (error) Alert.alert(JSON.stringify(error));
+
 
   return (
     <SafeAreaView>
