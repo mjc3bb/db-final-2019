@@ -5,6 +5,7 @@ import {Card, Divider, Input, Text} from 'react-native-elements';
 import gql from 'graphql-tag';
 import {cartStore} from "../state/Cart";
 import Collapsible from 'react-native-collapsible';
+import {userStore} from "../state/User";
 
 const homepageQuery = gql`
     query u($userID:Int) {
@@ -28,6 +29,12 @@ const homepageQuery = gql`
                 }
             }
         }
+    }
+`;
+
+const checkoutQuery = gql`
+    mutation c($orderID:Int, $userID:Int){
+      checkout(orderID:$orderID, userID:$userID)
     }
 `;
 
@@ -83,23 +90,28 @@ const OrderItem = ({lineItem, refetch}) => {
 };
 
 export default () => {
-  let userID = 1;
-  const {loading, error, data, refetch} = useQuery(homepageQuery, {variables: {userID: userID}});
+
+  const {loading, error, data, refetch} = useQuery(homepageQuery, {variables: {userID: parseInt(userStore.currentUserID)}});
   const [isLoading, setIsLoading] = useState(loading);
+
+  const [checkout, {}] = useMutation(checkoutQuery);
+
   function re(){
     setIsLoading(true);
-    refetch({variables: {userID: userID}}).then(()=>setIsLoading(false))
+    refetch({variables: {userID: parseInt(userStore.currentUserID)}}).then(()=>setIsLoading(false))
   }
 
   useEffect(()=>{
     re();
   },[cartStore.items]);
 
-  if (loading) {
+  if (loading || isLoading) {
     return null;
   }
 
+  // alert(data.user.currentOrder.lineItems.length);
 
+  if (error) alert(JSON.stringify(error));
 
   return (
     <SafeAreaView>
@@ -117,7 +129,7 @@ export default () => {
       />
       <View style={{flex:2, justifyContent:'center', padding:20}}>
         <Text >Order Total: {data.user && data.user.currentOrder ? data.user.currentOrder.orderTotal : 0}</Text>
-        <Button title="Checkout" onPress={()=>{}}/>
+        <Button title="Checkout" onPress={()=>{checkout({variables:{userID:parseInt(userStore.currentUserID), orderID:parseInt(data.user.currentOrder.orderID)}})}}/>
       </View>
       </View>
     </SafeAreaView>

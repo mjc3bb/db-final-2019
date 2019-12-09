@@ -2,6 +2,10 @@ insert ignore into users  values (
 	1, 'user', 'password', 122.22, Null
 );
 
+insert ignore into orders value (1, 1, "");
+
+update users set currentOrderID=1 where userID=1;
+
 insert ignore into tags(tagName) values
 	( "American" ),( "Burgers" ),( "Ice Cream" ),
     ( "Sandwiches" ),( "Diner" ),( "Wraps" ),

@@ -16,14 +16,14 @@ class Cart{
           }
       `,
       variables: {
-        orderID: userStore.currentOrderID,
+        orderID: parseInt(userStore.currentOrderID),
         item: {
           itemID:parseInt(itemID),
           serviceID:parseInt(serviceID),
           quantity:parseInt(quantity)
         }
       }
-    });
+    }).catch((error)=>alert(JSON.stringify(error)));
 
     this.items.push({itemID, serviceID, quantity});
   }

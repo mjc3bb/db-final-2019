@@ -7,8 +7,16 @@ class User {
     this.currentUserID = null;
   }
 
-  logIn(userID){
+  setUserOrder(userID, orderID){
     this.currentUserID = userID;
+    this.currentOrderID = orderID
+  }
+
+  logIn(userID, orderID){
+    return new Promise((resolve)=>{
+      this.setUserOrder(userID, orderID);
+      resolve();
+    });
   }
 }
 
