@@ -1,5 +1,5 @@
 insert ignore into users  values (
-	1, 'user', 'password', 122.22, Null
+	1, 'user', 'password', 500, Null
 );
 
 insert ignore into orders value (1, 1, "");
