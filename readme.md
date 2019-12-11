@@ -10,6 +10,8 @@
  - `cd mobile && npm ci`
    - This installs the node modules for the react native application
    - check https://facebook.github.io/react-native/docs/getting-started for setup info under the section 'React Native CLI Quickstart'
+   - You will need to open the xcworkspace file in the ios directory and add your apple developer signing information.
+   - While in this directory you will also need to run `pod install`
    - return to the project root
  - `cd db_webreact && npm ci`
   - This installs the node modules for the services web portal
