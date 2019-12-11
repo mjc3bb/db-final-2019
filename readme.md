@@ -1,5 +1,6 @@
-##BoroEats
-###Setup
+<h2>BoroEats</h2>
+
+<h3>Setup</h3>
 
  - run build_db.sql and populate_db.sql
    - This will create a database called dbfinal with a default user and pre-filled data
@@ -14,9 +15,9 @@
    - While in this directory you will also need to run `pod install`
    - return to the project root
  - `cd db_webreact && npm ci`
-  - This installs the node modules for the services web portal
+   - This installs the node modules for the services web portal
 
-###Running the server
+<h3>Running the Server</h3>
 
  - `cd server && npm start` and leave this running
  - `cd mobile && npm run ios` or `cd mobile && npm run android`
