@@ -1,5 +1,7 @@
 ## BoroEats
 
+UberEats clone written with React Native and Apollo GraphQL. For GSU Database Systems - Fall 2019.
+
 ### Setup
 
  - run build_db.sql and populate_db.sql
