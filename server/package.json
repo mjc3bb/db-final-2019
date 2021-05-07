@@ -20,6 +20,6 @@
     "promise-mysql": "^4.1.0",
     "request": "^2.88.0",
     "sequelize": "^5.19.4",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   }
 }
